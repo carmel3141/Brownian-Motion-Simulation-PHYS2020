@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 
 #time steps
 n = 5000
+dt= 0.01
+
+t= np.arange(n)*dt
 
 # motion in x and y direction
 x = np.cumsum(np.random.randn(n))
@@ -31,25 +34,20 @@ ax.axis('equal')
 ax.legend()
 plt.show()
 
-### Direct Displacement (Will do two types)
+msd_total = np.zeros(n)
+dx = x - x[0]
+dy = y - y[0]
 
-##def direct_MSD(position)
-  ##  position 
-  ##  displacements = position - position[0]
-  ##  sq_disp = np.sum(displacements**2, axis=1)
- ##   return sq_disp
+msd= dx**2 + dy**2
+msd_total += msd
 
-
-
-##will do one based on dx,dy,dt (based off of 2013 brownian motion lab document)
-
-
-
-
-
-#i need to make it continuous instead of lattice
-
-
+#msd plot
+fig, ax = plt.subplots(figsize=(7, 5))
+ax.plot(t, msd_total, color='purple', label='Mean Squared Displacement')
+ax.set_xlabel('Time Step')
+ax.set_ylabel('Mean Squared Displacement')
+ax.set_title('MSD of Brownian Motion')
+plt.show()
 
 ## need to figure out how to make it do it live and so i know where it is at each step
 
