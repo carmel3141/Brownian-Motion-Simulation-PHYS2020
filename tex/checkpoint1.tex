@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+
+%%% --- PACKAGES --- %%%
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{tikz,graphicx,pgfplots}
+\usetikzlibrary{patterns,decorations.pathmorphing,positioning}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usepackage{xcolor}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+%%% --- PAGE LAYOUT --- %%%
+\setlength{\textwidth}{168.0truemm}
+\setlength{\textheight}{255.0truemm}
+\setlength{\oddsidemargin}{-4.0mm}
+\setlength{\evensidemargin}{-4.0mm}
+\setlength{\topmargin}{-22.0truemm}
+\parindent=0mm
+\parskip=2mm
+\pagestyle{empty}
+
+%%% --- MATH OPERATORS --- %%%
+\DeclareMathOperator\artanh{artanh}
+\DeclareMathOperator\arsinh{arsinh}
+\DeclareMathOperator\arcosh{arcosh}
+\DeclareMathOperator\sech{sech}
+\newcommand{\ds}{\displaystyle}
+
+%%% --- SOLUTION ENVIRONMENT --- %%%
+% Inside the environment: write your solution directly.
+% While unanswered, leave the \answerspace{Xcm} command as a placeholder
+% (it just reserves vertical space). Delete it once you start writing.
+\newenvironment{solution}{%
+    \par\vspace{4pt}%
+    \noindent\rule{\linewidth}{0.3pt}%
+    \par\smallskip%
+    \noindent\textit{Solution.}\par\smallskip%
+}{%
+    \par\noindent\rule{\linewidth}{0.3pt}%
+    \par\vspace{6pt}%
+}
+
+% Placeholder vertical space — delete this command when writing your solution.
+\newcommand{\answerspace}[1][6cm]{\vspace{#1}}
+
+%%% -------------------------------------------------------- %%%
+\begin{document}
+
+%%% --- HEADER --- %%%
+\begin{center}
+    {\bf COLLEGE OF SCIENCE}
+\end{center}
+\centerline{\large\bf PHYS2020}       % <-- course code
+\vspace{0.1cm}
+\centerline{\large\bf Simulation Plan}   % <-- assignment number
+\vspace{0.1cm}
+\centerline{\large\bf Semester One 2026}
+\vspace{3mm}
+\hrule
+\vspace{3mm}
+
+%%% --- STUDENT DETAILS --- %%%
+\begin{tabular}{rl}
+    & Family name: Lukacs \\[6pt]
+    & Given names: Matthew David Carmel\\[6pt]
+    & Student number: u8507410\\[6pt]
+\end{tabular}
+
+\vspace{4mm}
+\hrule
+\vspace{4mm}
+
+
+
+\subsection{What I've done so far}
+I have now set up a github repository which is also linked to my google drive\\
+https://github.com/carmel3141/Brownian-Motion-Simulation-PHYS2020\\
+I have tested a few commits to see if i remember how to use github.
+I know what formulas I will be testing from the Brownian Motion Lab manual, and i will be using numpy and matplot in python to implement it. The rng generator in python should suffice, and it should be quite quick to set something very basic up, then I will scale it up from there. I know I will need to compare these results to real results, and I might be able to reference my brownian motion laboratory results even, perhaps. 
+
+
+
+
+\end{document}
