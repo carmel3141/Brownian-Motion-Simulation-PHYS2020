@@ -2,23 +2,32 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-for i in range(5):
-    n=1000
+def random_walk_2d(n):
     moves = np.array([[0,1],[0,-1],[1,0],[-1,0]])
 
-    random_walk = np.random.choice(4, size=n)
-    steps = moves[random_walk]
+    steps = np.random.choice(4, size=n)
+    position = np.cumsum(moves[steps], axis=0)
+
+    return position
 
 
-    position = np.cumsum(steps,axis=0)
-    x, y = position[:, 0], position[:, 1]
+n = 10000
+dt = 0.01
 
-    plt.plot(position[:,0], position[:,1])
-    plt.scatter(0, 0, color='red', label='Start')
-    plt.scatter(x[-1],y[-1],color='black', label='End')
-    plt.title(f"2D Random Walk ({n} Steps)")
-    plt.legend()
-    plt.show()
+position = random_walk_2d(n)
+
+x, y = position[:, 0], position[:, 1]
+t = np.arange(n) * dt
+
+
+# --- plot trajectory ---
+plt.plot(x, y)
+plt.scatter(0, 0, color='red', label='Start')
+plt.scatter(x[-1], y[-1], color='black', label='End')
+
+plt.title(f"2D Random Walk ({n} steps)")
+plt.legend()
+plt.show()
 
 
 ### Direct Displacement (Will do two types)
@@ -37,7 +46,7 @@ for i in range(5):
 
 
 
-
+#i need to make it continuous instead of lattice
 
 
 
