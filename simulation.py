@@ -2,33 +2,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def random_walk_2d(n):
-    moves = np.array([[0,1],[0,-1],[1,0],[-1,0]])
+#time steps
+n = 5000
 
-    steps = np.random.choice(4, size=n)
-    position = np.cumsum(moves[steps], axis=0)
+# motion in x and y direction
+x = np.cumsum(np.random.randn(n))
+y = np.cumsum(np.random.randn(n))
 
-    return position
+# interpolate for smoothness 
+k = 10
+x2 = np.interp(np.arange(0, n, k), np.arange(n), x)
+y2 = np.interp(np.arange(0, n, k), np.arange(n), y)
 
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 
-n = 10000
-dt = 0.01
+#path and points
+ax.plot(x2, y2, color='blue', linewidth=1, label='Brownian Motion')
+ax.scatter(x2[0], y2[0], color='green', s=100, label='Start Point')
+ax.scatter(x2[-1], y2[-1], color='red', s=100, label='End Point')
 
-position = random_walk_2d(n)
-
-x, y = position[:, 0], position[:, 1]
-t = np.arange(n) * dt
-
-
-# --- plot trajectory ---
-plt.plot(x, y)
-plt.scatter(0, 0, color='red', label='Start')
-plt.scatter(x[-1], y[-1], color='black', label='End')
-
-plt.title(f"2D Random Walk ({n} steps)")
-plt.legend()
+#cartesian
+ax.axhline(0, color='gray', linewidth=0.5, linestyle='--')
+ax.axvline(0, color='gray', linewidth=0.5, linestyle='--')
+ax.set_xlabel('X Position')
+ax.set_ylabel('Y Position')
+ax.set_title('2D Brownian Motion Simulation')
+ax.axis('equal')
+ax.legend()
 plt.show()
-
 
 ### Direct Displacement (Will do two types)
 
