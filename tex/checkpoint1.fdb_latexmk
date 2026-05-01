@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1777639531.26218 "/home/matthew/Drive/matthewdavidcarmellukacs@gmail.com/Google Drive/Uni/Year 2/Semester 1/PHYS2020/sim/Brownian-Motion-Simulation-PHYS2020/tex/checkpoint1.tex" "checkpoint1.pdf" "checkpoint1" 1777639532.36885 0
+["pdflatex"] 1777642417.66458 "/home/matthew/Drive/matthewdavidcarmellukacs@gmail.com/Google Drive/Uni/Year 2/Semester 1/PHYS2020/sim/Brownian-Motion-Simulation-PHYS2020/tex/checkpoint1.tex" "checkpoint1.pdf" "checkpoint1" 1777642418.601 0
   "/etc/texmf/web2c/texmf.cnf" 1765245274.27655 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/matthew/Drive/matthewdavidcarmellukacs@gmail.com/Google Drive/Uni/Year 2/Semester 1/PHYS2020/sim/Brownian-Motion-Simulation-PHYS2020/tex/checkpoint1.tex" 1777639530.05963 7704 01b918d61afae4298f3b38cb16dd941a ""
+  "/home/matthew/Drive/matthewdavidcarmellukacs@gmail.com/Google Drive/Uni/Year 2/Semester 1/PHYS2020/sim/Brownian-Motion-Simulation-PHYS2020/tex/checkpoint1.tex" 1777642415.41757 8063 b36fb20635dc1b9fbbd62e90b9def01a ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -184,8 +184,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1765245311.18892 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1765245641 8212677 745815d0397ed401ec5f0fe372917ebc ""
-  "checkpoint1.aux" 1777639532.30671 940 f8cfde5077c59c4e7874156cf561c95d "pdflatex"
-  "checkpoint1.tex" 1777639530.05963 7704 01b918d61afae4298f3b38cb16dd941a ""
+  "checkpoint1.aux" 1777642418.55152 940 5cf6284b2a2fa0fa4f288f89572aa13f "pdflatex"
+  "checkpoint1.tex" 1777642415.41757 8063 b36fb20635dc1b9fbbd62e90b9def01a ""
   "large trk 1 particle a and B.png" 1775787336.7731 320413 3d21b7fc427234b102cf06b7cc66ff46 ""
   "trial1.png" 1777422489.54971 18596 842c75a835480bec374e56701d57b3a1 ""
   "trial_2.png" 1777637393.27484 75121 bd7104f7a2a839e7c0f181a570aa0888 ""

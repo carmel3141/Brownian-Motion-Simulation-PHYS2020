@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from matplotlib.animation import FuncAnimation
 
 #time steps
 n = 5000
@@ -19,6 +19,9 @@ y2 = np.interp(np.arange(0, n, k), np.arange(n), y)
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 
+line, = ax.plot([], [], color='blue', linewidth=1, label='Brownian Motion')
+point, = ax.plot([], [], 'ro', label='Current Position')
+
 #path and points
 ax.plot(x2, y2, color='blue', linewidth=1, label='Brownian Motion')
 ax.scatter(x2[0], y2[0], color='green', s=100, label='Start Point')
@@ -32,6 +35,26 @@ ax.set_ylabel('Y Position')
 ax.set_title('2D Brownian Motion Simulation')
 ax.axis('equal')
 ax.legend()
+
+
+def anim():
+    line.set_data([], [])
+    point.set_data([], [])
+    return line, point
+
+def update(frame):
+    line.set_data(x2[:frame], y2[:frame])
+    point.set_data([x2[frame]], [y2[frame]])
+    return line, point
+
+ani = FuncAnimation(
+    fig,
+    update,
+    frames=n,
+    init_func=anim,
+    interval=5,
+    blit=True
+)
 plt.show()
 
 msd_total = np.zeros(n)
