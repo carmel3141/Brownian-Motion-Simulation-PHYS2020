@@ -5,8 +5,8 @@ from scipy.stats import linregress
 
 #physical constants
 kB = 1.380649e-23
-T = 300
-eta = 1e-3
+T = 298
+eta = 8.9e-4
 a = 0.5e-6
 D = kB * T / (6 * np.pi * eta * a)
 print(f"Diffusion Coefficient: {D:.4e} m^2/s")
@@ -72,6 +72,7 @@ ax_msd.plot(t, slope * t + intercept, label=f'Fit: D={D_fit:.2e} m^2/s, R^2={r**
 ax_msd.set_xlabel('Time (s)')
 ax_msd.set_ylabel('MSD (um^2)')
 ax_msd.legend()
+#hey i think u have to full screen for this lowk the fig doesn't always show up and sometimes is blank, i think tight layout is cooking it a bit, so fullscreen it plz
 
 #anim
 trail = 80
@@ -95,7 +96,8 @@ ani = FuncAnimation(
     frames=n_steps,
     init_func=init,
     interval=20,
-    blit=True
+    blit=True,
+    repeat=False
 )
 
 plt.suptitle('Brownian Motion Simulation')
