@@ -49,6 +49,7 @@ ax_walk.scatter(x_all[1:, -1], y_all[1:, -1], color='red', alpha=0.5)
 
 # ax.plot() returns a list, the trailing comma unpacks it to get the Line2D directly
 # blit=True requires Line2D objects, not lists, so this is necessary
+# i know its a bit weird to explain this line but there was a bug that was cooking me so i thought i should clarify it
 bg_line, = ax_walk.plot([], [], color='black', lw=0.8)
 live_line, = ax_walk.plot([], [], color='red', lw=2)
 live_dot, = ax_walk.plot([], [], 'o', color='green', markersize=8)
