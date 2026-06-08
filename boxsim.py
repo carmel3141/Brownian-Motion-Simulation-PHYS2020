@@ -222,7 +222,6 @@ def main():
             for i in range(len(particles)):
                 for j in range(i + 1, len(particles)):
                     collide(particles[i], particles[j])
- new
             #trail and msd tracking
             trail.append((large['x'], large['y']))
             if len(trail) > trail_len:
