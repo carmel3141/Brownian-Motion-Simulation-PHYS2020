@@ -1,87 +1,226 @@
-\documentclass[prb,preprint]{revtex4-1} 
-% The line above defines the type of LaTeX document.
-% Note that AJP uses the same style as Phys. Rev. B (prb).
-
-% The % character begins a comment, which continues to the end of the line.
-
-\usepackage{amsmath}  % needed for \tfrac, \bmatrix, etc.
-\usepackage{amsfonts} % needed for bold Greek, Fraktur, and blackboard bold
-\usepackage{graphicx} % needed for figures
+\documentclass[prb,twocolumn]{revtex4-1}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{url}
 
 \begin{document}
 
-% Be sure to use the \title, \author, \affiliation, and \abstract macros
-% to format your title page.  Don't use lower-level macros to  manually
-% adjust the fonts and centering.
+\title{Computational Simulation of Two-Dimensional Brownian Motion:\\
+Diffusion Coefficient and Boltzmann Constant Extraction}
 
-\title{title}
-% In a long title you can use \\ to force a line break at a certain location.
-
-%When submitting the manuscript for review, do not include the author's name or institution
-\author{Matthew Lukacs}
-%\email{dschroeder@weber.edu} % optional
-%\altaffiliation[permanent address: ]{101 Main Street, Anytown, USA} % optional second address
-% If there were a second author at the same address, we would put another 
-% \author{} statement here.  Don't combine multiple authors in a single
-% \author statement.
+\author{Matthew David Carmel Lukacs}
+\affiliation{College of Science, Australian National University}
 \affiliation{u8507410}
-% Please provide a full mailing address here.
-
-%\author{David P. Jackson}
-%\email{ajp@dickinson.edu}
-%\affiliation{Department of Physics, Dickinson College, Carlisle, PA 17013}
-
-% See the REVTeX documentation for more examples of author and affiliation lists.
-
-\date{\today}
+\date{Semester 1, 2026; PHYS2020}
 
 \begin{abstract}
-..
+Two-dimensional Brownian motion was simulated in Python using a multi-particle random walk model grounded in Einstein's diffusion theory. The simulation was developed iteratively through four stages, from an initial lattice walk to a physics-based continuous model with ensemble mean squared displacement (MSD) analysis. Physical constants were chosen to match the conditions of the associated PHYS2013 laboratory experiment~\cite{lukacs2026lab}. The diffusion coefficient $D$ was extracted via linear regression on the ensemble MSD and used to estimate Boltzmann's constant $k_{\mathrm{B}}$ via the Stokes--Einstein relation, replicating Perrin's 1909 experimental approach. Across four independent runs ($T = 298$\,K, $\eta = 8.9\times10^{-4}$\,Pa$\cdot$s, $a = 0.5\,\mu$m), the mean fitted diffusion coefficient was $\bar{D}_{\mathrm{fit}} = (4.87\pm0.41)\times10^{-13}$\,m$^2$/s, agreeing with the Stokes--Einstein prediction $D_{\mathrm{theo}} = 4.905\times10^{-13}$\,m$^2$/s to within $0.8\%$. The corresponding estimate of Boltzmann's constant is $\bar{k}_{\mathrm{B,fit}} = (1.37\pm0.12)\times10^{-23}$\,J/K, within $0.8\%$ of the accepted value. An interactive particle box simulation was additionally developed in Pygame demonstrating diffusion as an emergent phenomenon.
 \end{abstract}
-% AJP requires an abstract for all regular article submissions.
-% Abstracts are optional for submissions to the "Notes and Discussions" section.
 
-\maketitle % title page is now complete
+\maketitle
 
+\section{Introduction}
 
-\section{Introduction} % Section titles are automatically converted to all-caps.
-% Section numbering is automatic.
+When a microscopic particle is suspended in a fluid, it undergoes continuous, irregular motion driven by thermal collisions with the surrounding fluid molecules. This phenomenon was documented by Robert Brown in 1828~\cite{brown1828} and given a quantitative theoretical framework by Einstein in 1905~\cite{einstein1905}, who showed that particle displacements follow a Gaussian probability distribution. Perrin subsequently verified this experimentally and extracted Boltzmann's constant from measured diffusion coefficients, earning the Nobel Prize in Physics in 1926~\cite{perrin1909}. Brownian motion provided some of the earliest direct evidence for the atomic nature of matter.
 
-\section{Expeimental Procedure}
+This project computationally replicates Perrin's approach: simulating the Brownian motion of a 500\,nm bead in water, extracting $D$ from the ensemble MSD, and recovering $k_{\mathrm{B}}$ via the Stokes--Einstein relation. The physical constants $T = 298$\,K and $\eta = 8.9\times10^{-4}$\,Pa$\cdot$s match the conditions of the associated PHYS2013 laboratory experiment~\cite{lukacs2026lab}, allowing direct comparison between the simulated and experimentally measured Boltzmann constant. The simulation was developed iteratively through four stages; an additional interactive Pygame particle box demonstrates diffusion as an emergent microscopic phenomenon.
 
-\section{Results and Discussion}
+\section{Theory}
+
+Einstein showed~\cite{einstein1905} that the probability distribution for the displacement $x$ of a suspended particle along one axis at time $t$ is:
+\begin{equation}
+f(x,t) = \frac{1}{\sqrt{4\pi D t}}\exp\!\left(-\frac{x^2}{4Dt}\right),
+\label{eq:einstein}
+\end{equation}
+which is a Gaussian $\mathcal{N}(0,\sigma^2)$ with $\sigma^2 = 2Dt$. For two-dimensional motion in the $xy$-plane, $x$ and $y$ displacements are independent by symmetry, giving a mean squared displacement~\cite{reif1965}:
+\begin{equation}
+\langle r^2(t)\rangle = \langle x^2\rangle + \langle y^2\rangle = 4Dt.
+\label{eq:msd}
+\end{equation}
+The diffusion coefficient $D$ is given by the Stokes--Einstein relation~\cite{einstein1905}:
+\begin{equation}
+D = \frac{k_{\mathrm{B}}T}{6\pi\eta a},
+\label{eq:stokes}
+\end{equation}
+where $T$ is the absolute temperature, $\eta$ is the dynamic viscosity, and $a$ is the particle radius. Rearranging gives the working equation for $k_{\mathrm{B}}$:
+\begin{equation}
+k_{\mathrm{B}} = \frac{6\pi\eta a D}{T}.
+\label{eq:kb}
+\end{equation}
+It follows from Eq.~(\ref{eq:einstein}) that individual steps along each axis are distributed as $\mathcal{N}(0,\sigma)$ with $\sigma = \sqrt{2D\Delta t}$, which is used to set the simulation step sizes in Section~\ref{sec:methods}.
+
+\section{Simulation Development}
+\label{sec:dev}
+
+The simulation was developed iteratively through four stages.
+
+\subsection{Stage 1: Lattice walk}
+
+The initial implementation modelled a single particle on a discrete lattice, stepping one unit in a randomly chosen cardinal direction at each timestep. Figure~\ref{fig:trial1} shows a representative trajectory. While this captures the qualitative appearance of Brownian motion, the lattice constraint is unphysical and prevents quantitative comparison with Eq.~(\ref{eq:einstein}).
+
+\begin{figure}[h]
+\includegraphics[width=\columnwidth]{trial1}
+\caption{Stage~1: lattice random walk. Steps are constrained to the four cardinal directions, producing the square-grid appearance. This stage established the basic animation loop but uses no physical constants.\label{fig:trial1}}
+\end{figure}
+
+\subsection{Stage 2: Continuous interpolated walk}
+
+The lattice constraint was removed by replacing cardinal steps with continuous Gaussian displacements drawn from $\mathcal{N}(0,1)$, scaled by a step-size parameter. Linear interpolation between steps was added for visual smoothness, removing the grid artefact and producing trajectories that visually resemble real Brownian motion (Fig.~\ref{fig:trial2}). However, step sizes were not yet derived from physical constants, limiting quantitative analysis. An animation bug was also identified at this stage: the \texttt{FuncAnimation} \texttt{frames} parameter had been set to $n = 5000$ (the number of raw steps), while the interpolated arrays had only $n/k = 500$ entries. This caused an \texttt{IndexError} at runtime once the frame index exceeded the array length. The fix was to set \texttt{frames=len(x2)}, matching the animation length to the interpolated data.
+
+\begin{figure}[h]
+\includegraphics[width=\columnwidth]{trial_2}
+\caption{Stage~2: continuous interpolated walk. Replacing cardinal steps with Gaussian displacements and adding linear interpolation removes the lattice artefact, producing a realistic-looking trajectory. Step sizes are not yet physically motivated.\label{fig:trial2}}
+\end{figure}
+
+\subsection{Stage 3: Multi-particle ensemble with MSD}
+
+The simulation was extended to an ensemble of $N = 30$ particles. The ensemble MSD (Eq.~\ref{eq:ensmsd}) was computed at each timestep and plotted alongside the theoretical prediction from Eq.~(\ref{eq:msd}). A linear regression was applied to extract $D_{\mathrm{fit}}$.
+
+\subsection{Stage 4: Physics-grounded steps and analysis}
+
+Step sizes were grounded in physical constants by setting $\sigma = \sqrt{2D_{\mathrm{theo}}\Delta t}$ per axis, where $D_{\mathrm{theo}}$ is computed from Eq.~(\ref{eq:stokes}). A live animation, terminal summary with uncertainties, and post-animation analysis figure were added at this stage.
+
+An inconsistency was identified during development: the initial implementation used $T = 300$\,K with $\eta = 1.00\times10^{-3}$\,Pa$\cdot$s (corresponding to water at $\approx20^{\circ}$C), inconsistent since 300\,K $\approx 27^{\circ}$C. This was corrected to $T = 298$\,K with $\eta = 8.9\times10^{-4}$\,Pa$\cdot$s, matching the PHYS2013 laboratory conditions~\cite{lukacs2026lab}.
+
+\subsection{Implementation challenges}
+
+Several bugs and design issues were identified and resolved across development. Beyond the animation index error at Stage~2, a sign error in the display scale factor ($10^{-6}$ instead of $10^6$) caused positions to be displayed in nanometres rather than microns, compressing all trajectories to an invisible point. The T/$\eta$ inconsistency described above was a subtler error: both values compiled and ran without error, but were physically inconsistent. These are representative of the kinds of silent errors common in scientific computing, where incorrect results are produced without any runtime indication of failure.
+
+For the particle box simulation, an initial implementation of the mean squared displacement tracked the large particle's absolute displacement from its starting position. In a bounded box, this quantity saturates once the particle has explored the available space, driving the fitted slope --- and therefore $D_{\mathrm{sim}}$ --- to zero. The fix was to replace absolute displacement with a windowed approach: measuring $\langle r^2(\tau)\rangle$ over a fixed lag $\tau$, which remains well-defined regardless of box boundaries. A separate issue was that the Stokes drag coefficient, without a scale factor, decayed the large particle's velocity to near zero between collisions, suppressing diffusion entirely. Introducing a 0.1 scale factor restored physically reasonable behaviour while preserving the qualitative effect of the viscosity slider.
+
+\subsection{Extension: Interactive particle box simulation}
+
+The particle box simulation was developed in three tiers of increasing physical fidelity, chosen deliberately to separate the mechanics from the physics. Pygame was used in preference to Matplotlib because the box simulation requires a real-time physics loop advancing state each frame; Matplotlib's \texttt{FuncAnimation} pre-computes frames and has pacing limitations under collision-detection load.
+
+The \textit{basic tier} established the core mechanics: one large and $N_{\mathrm{small}} = 20$ uniform-speed small particles, elastic hard-sphere collisions (conserving momentum and kinetic energy), and wall bounces. The \textit{middle tier} introduced physics-based speeds ($v \propto \sqrt{T}$ from Maxwell--Boltzmann, with the large particle slower by $\sqrt{m_{\mathrm{small}}/m_{\mathrm{large}}}$), temperature and viscosity sliders, Stokes drag on the large particle, a trail, and a live windowed MSD panel. The \textit{upgraded tier} added a particle size slider updating $r_{\mathrm{large}}$ and $m_{\mathrm{large}} \propto r^2$ in real time, real-time $D_{\mathrm{sim}}$ extraction via $\langle r^2(\tau)\rangle/(4\tau)$, and a $D\cdot r$ display for qualitative assessment of the Stokes--Einstein scaling.
+
+\section{Methods}
+\label{sec:methods}
+
+The simulation parameters are listed in Table~\ref{tab:params}. At each timestep $\Delta t$, the displacement of each of the $N = 30$ particles along each axis is drawn independently from $\mathcal{N}(0,\sigma)$ with $\sigma = \sqrt{2D_{\mathrm{theo}}\Delta t}$, following from Eq.~(\ref{eq:einstein}). Positions are the cumulative sum of these steps. The ensemble MSD is:
+\begin{equation}
+\langle r^2(t)\rangle = \frac{1}{N}\sum_{i=1}^{N}\left[(x_i(t)-x_i(0))^2 + (y_i(t)-y_i(0))^2\right].
+\label{eq:ensmsd}
+\end{equation}
+
+\begin{table}[h]
+\caption{Simulation parameters.\label{tab:params}}
+\begin{ruledtabular}
+\begin{tabular}{ll}
+Parameter & Value \\
+\hline
+Temperature $T$ & 298\,K \\
+Viscosity $\eta$ & $8.9\times10^{-4}$\,Pa$\cdot$s \\
+Particle radius $a$ & 0.5\,$\mu$m \\
+$k_{\mathrm{B}}$ (NIST~\cite{nist}) & $1.380649\times10^{-23}$\,J/K \\
+$D_{\mathrm{theo}}$ (Stokes--Einstein) & $4.905\times10^{-13}$\,m$^2$/s \\
+Particles $N$ & 30 \\
+Timesteps $n$ & 800 \\
+$\Delta t$ & 0.05\,s \\
+Step std $\sigma$ per axis & $\sqrt{2D_{\mathrm{theo}}\Delta t}$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+A linear regression (\texttt{scipy.stats.linregress}) is applied to MSD versus time, giving slope $m = 4D$ and $D_{\mathrm{fit}} = m/4$. The $1\sigma$ uncertainty is propagated from the regression standard error: $\sigma_D = \sigma_{\mathrm{slope}}/4$. Boltzmann's constant is estimated from Eq.~(\ref{eq:kb}). Each of the four reported runs used an independent random seed, so run-to-run variation reflects genuine stochastic scatter.
+
+\section{Results}
+
+Figure~\ref{fig:sim} shows the Stage~4 output for a representative unseeded run ($D_{\mathrm{fit}} = 4.85\times10^{-13}$\,m$^2$/s, $R^2 = 0.987$); no run was discarded or rerun to produce this result. Table~\ref{tab:runs} summarises results across four independent runs. Individual percentage errors range from $2.0\%$ to $11.3\%$, with a mean error of $6.4\%$. The mean $D_{\mathrm{fit}}$ and $k_{\mathrm{B,fit}}$ agree with their accepted values to within $0.8\%$.
+
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{sim_main}
+\caption{Stage~4 simulation output. \textit{Left}: 30-particle random walk ensemble ($T = 298$\,K, $a = 0.5\,\mu$m). The highlighted particle (black/red trail) is animated live; green dot marks its starting position. \textit{Right}: Ensemble MSD versus time with theoretical prediction from Eq.~(\ref{eq:msd}) (orange dashed) and linear regression fit (green dotted). This run: $D_{\mathrm{fit}} = 4.85\times10^{-13}$\,m$^2$/s, $R^2 = 0.987$.\label{fig:sim}}
+\end{figure*}
+
+\begin{table}[h]
+\caption{Results across four independent simulation runs. $D_{\mathrm{theo}} = 4.905\times10^{-13}$\,m$^2$/s; accepted $k_{\mathrm{B}} = 1.381\times10^{-23}$\,J/K. Uncertainties are $1\sigma$ from regression standard error.\label{tab:runs}}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+Run & $D_{\mathrm{fit}}$ ($10^{-13}$\,m$^2$/s) & Err.\ (\%) & $R^2$ & $k_{\mathrm{B,fit}}$ ($10^{-23}$\,J/K) \\
+\hline
+1 & $4.689 \pm 0.027$ & 4.4 & 0.979 & 1.320 \\
+2 & $4.516 \pm 0.019$ & 7.9 & 0.987 & 1.271 \\
+3 & $4.806 \pm 0.016$ & 2.0 & 0.991 & 1.353 \\
+4 & $5.460 \pm 0.038$ & 11.3 & 0.963 & 1.537 \\
+\hline
+Mean & $4.87 \pm 0.41$ & 6.4 & 0.980 & $1.37 \pm 0.12$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Figure~\ref{fig:analysis} shows the post-simulation analysis for a representative run. MSD residuals are small and random at early times but increase in scatter at late times. The displacement step distribution matches the expected Gaussian closely across the full range of step sizes.
+
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{analysis}
+\caption{Post-simulation analysis. \textit{Left}: MSD residuals (simulated MSD minus linear fit) versus time. Shaded band shows $\pm1\sigma = \pm3.15\,\mu\mathrm{m}^2$. Scatter increases at late times, consistent with finite ensemble sampling effects. \textit{Right}: Displacement step distribution (all axes and particles, $n = 47{,}940$) versus expected Gaussian $\mathcal{N}(0,\sigma)$ with $\sigma = 0.222\,\mu$m. Agreement is consistent with Einstein's assumption (Eq.~\ref{eq:einstein}).\label{fig:analysis}}
+\end{figure*}
+
+\section{Discussion}
+
+\subsection{Diffusion coefficient and Boltzmann constant}
+
+The mean $\bar{D}_{\mathrm{fit}} = (4.87\pm0.41)\times10^{-13}$\,m$^2$/s agrees with the Stokes--Einstein prediction to within $0.8\%$, and $\bar{k}_{\mathrm{B,fit}} = (1.37\pm0.12)\times10^{-23}$\,J/K agrees with the NIST value~\cite{nist} to within $0.8\%$. Individual run errors of $2$--$11\%$ reflect genuine stochastic variation: with only $N = 30$ particles and $n = 800$ steps, each run represents a different random ensemble realisation. The positive correlation between $R^2$ and percentage error across runs suggests that runs with more linear MSD behaviour tend to yield better $D$ estimates.
+
+\subsection{Comparison with experimental results}
+
+In the associated PHYS2013 experiment~\cite{lukacs2026lab}, $k_{\mathrm{B}}$ was determined from tracked polystyrene microspheres ($a = 0.45\,\mu$m, $T = 299.25$\,K). The best experimental result via MSD analysis gave $k_{\mathrm{B,exp}} = (1.081\pm0.043)\times10^{-23}$\,J/K, a $7.0\sigma$ underestimate. That report identified untracked $z$-axis motion, pixel calibration uncertainty, and temperature measurement timing as likely systematic sources, with a sensitivity analysis showing that temperature and viscosity corrections alone could account for at most $\sim15\%$ of the discrepancy~\cite{lukacs2026lab}. The simulation is free of these effects by construction (all motion is two-dimensional and particle position is exact), which likely explains why the simulated result agrees more closely with the accepted value despite the shared theoretical framework.
+
+\subsection{Gaussian step distribution}
+
+The step histogram in Fig.~\ref{fig:analysis} matches $\mathcal{N}(0,\sigma)$ across the full range, suggesting Einstein's assumption (Eq.~\ref{eq:einstein}) is well-supported and consistent with the step-size scaling $\sigma = \sqrt{2D\Delta t}$. This is the same distribution verified experimentally in the PHYS2013 displacement histograms~\cite{lukacs2026lab}.
+
+\subsection{Interactive particle box simulation}
+
+An interactive simulation of a single large Brownian particle surrounded by smaller fluid molecules was developed in Pygame (Fig.~\ref{fig:boxsim}). Unlike the random walk model, which pre-computes positions from Gaussian steps, the box simulation advances in real time via explicit elastic collision physics. The large particle's irregular trajectory (orange trail) emerges naturally from momentum-conserving collisions with the fluid molecules, directly demonstrating the molecular-scale origin of Brownian motion without any prescribed random walk.
+
+\begin{figure}[h]
+\includegraphics[width=\columnwidth]{pausess}
+\caption{The upgraded interactive particle box simulation, shown paused. The large orange particle undergoes Brownian motion driven by elastic collisions with the smaller blue fluid molecules. The right panel shows live sliders for temperature, viscosity, and particle size, real-time diffusion statistics, and a live MSD plot (red: windowed $\langle r^2(\tau)\rangle$; green: linear fit). For this run: $D_{\mathrm{sim}} = 109.78$\,px$^2$/s and $D\cdot r = 2744.5$\,px$^3$/s at $r = 25$\,px, $T = 300$\,K.\label{fig:boxsim}}
+\end{figure}
+
+Live sliders allow temperature changes (rescaling all molecular speeds by $\sqrt{T_{\mathrm{new}}/T_{\mathrm{prev}}}$, from Maxwell--Boltzmann) and viscosity (applied as Stokes drag: $\Delta v = -6\pi\eta_{\mathrm{sim}} r v\,\Delta t/m$ per frame on the large particle). A third slider changes the large particle's radius in real time, updating its mass as $m \propto r^2$. The diffusion coefficient is extracted via $D_{\mathrm{sim}} = \langle r^2(\tau)\rangle/(4\tau)$, where $\langle r^2(\tau)\rangle$ is the mean windowed squared displacement over a fixed lag $\tau = 30$ frames.
+
+The live MSD plot in Fig.~\ref{fig:boxsim} illustrates a key contrast with the random walk simulation: the single-particle windowed MSD (red) is highly noisy, fluctuating around the linear fit (green) with large excursions. This is expected --- the box simulation tracks only one large particle, whereas \texttt{simulation.py} averages the MSD over $N = 30$ particles, suppressing noise by a factor of roughly $\sqrt{N}$. The noisiness of the single-particle MSD is itself physically meaningful, reflecting the stochastic nature of individual Brownian trajectories, and is broadly analogous to the scatter seen in the single-particle tracks of the PHYS2013 experiment~\cite{lukacs2026lab}.
+
+It is important to note that $D_{\mathrm{sim}}$ is in simulation units (px$^2$/s), not m$^2$/s, since the box simulation uses a dimensionless viscosity slider and pixel-based velocities rather than real physical constants. Absolute comparison with the Stokes--Einstein prediction is therefore not meaningful. However, the \textit{scaling} with particle size can be tested qualitatively: Eq.~(\ref{eq:stokes}) suggests $D \propto 1/r$, equivalently $D\cdot r \approx \mathrm{const}$. For the run shown, $D\cdot r = 2744.5$\,px$^3$/s at $r = 25$\,px. A systematic test varying $r$ and checking whether $D\cdot r$ remains approximately constant would more rigorously assess this scaling; this is identified as a natural extension.
 
 \section{Conclusion}
 
-.
+A Python simulation of two-dimensional Brownian motion was implemented and validated across four independent runs. The mean fitted diffusion coefficient $\bar{D}_{\mathrm{fit}} = (4.87\pm0.41)\times10^{-13}$\,m$^2$/s agrees with the Stokes--Einstein prediction to within $0.8\%$, and the mean Boltzmann constant estimate $\bar{k}_{\mathrm{B,fit}} = (1.37\pm0.12)\times10^{-23}$\,J/K agrees with the NIST value~\cite{nist} to within $0.8\%$. The Gaussian step distribution strongly supports Einstein's 1905 assumption. Comparison with the PHYS2013 result~\cite{lukacs2026lab} suggests a key advantage of simulation over experiment: systematic effects from $z$-axis motion, pixel calibration, and temperature measurement --- which likely caused the $7.0\sigma$ underestimate in the laboratory --- are absent from an idealised numerical model. An interactive Pygame particle box additionally demonstrates Brownian motion as a collision-driven emergent phenomenon.
 
-\section{Endnotes and references}
+\subsection{Try it yourself!}
+The code for both the random walk simulation and the interactive particle box is available on GitHub at \url{https://github.com/carmel3141/Brownian-Motion-Simulation-PHYS2020}. 
 
-\appendix*   % Omit the * if there's more than one appendix.
+\begin{thebibliography}{9}
 
-\section{Uninteresting stuff}
+\bibitem{brown1828}
+R.\ Brown, Edinburgh New Philosophical Journal, p.\ 358 (1828).
 
-Appendices are for material that is needed for completeness but
-not sufficiently interesting to include in the main body of the paper.  Most
-articles don't need any appendices, but feel free to use them when
-appropriate.  This sample article needs an appendix only to illustrate how 
-to create an appendix.
+\bibitem{einstein1905}
+A.\ Einstein, Annalen der Physik \textbf{17}, 549 (1905).
 
+\bibitem{perrin1909}
+J.\ Perrin, Annales de Chimie et de Physique \textbf{18}, 5 (1909).
 
-\begin{acknowledgments}
+\bibitem{reif1965}
+F.\ Reif, \textit{Fundamentals of Statistical and Thermal Physics}, McGraw-Hill, New York (1965), Ch.~15.
 
-We gratefully acknowledge Harvey Gould and Jan Tobochnik, who created an earlier 
-AJP \LaTeX\ sample article that inspired this one.  This work was supported by the 
-American Association of Physics Teachers.
+\bibitem{lukacs2026lab}
+M.\ D.\ C.\ Lukacs, PHYS2013 Laboratory Report: Brownian Motion, Australian National University (2026). Unpublished.
 
-\end{acknowledgments}
+\bibitem{nist}
+National Institute of Standards and Technology (NIST),
+\url{https://physics.nist.gov/cgi-bin/cuu/Value?k} (accessed 2026).
 
+\bibitem{water_viscosity}
+Water viscosity data table,
+\url{https://chem-casts.com/data-tables/water-viscosity-data-table} (accessed 2026).
 
-\begin{thebibliography}{99}
-% The numeral (here 99) in curly braces is nominally the number of entries in
-% the bibliography. It's supposed to affect the amount of space around the
-% numerical labels, so only the number of digits should matter--and even that
-% seems to make no discernible difference.
+\bibitem{anu_manual}
+ANU PHYS2020 Laboratory Manual, Brownian Motion Simulation (2026).
 
 \end{thebibliography}
 

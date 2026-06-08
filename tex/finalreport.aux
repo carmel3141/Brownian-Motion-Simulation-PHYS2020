@@ -1,20 +1,77 @@
 \relax 
+\citation{lukacs2026lab}
+\citation{brown1828}
+\citation{einstein1905}
+\citation{perrin1909}
+\citation{lukacs2026lab}
+\citation{einstein1905}
+\citation{reif1965}
+\citation{einstein1905}
 \newlabel{FirstPage}{{}{1}{}{}{}}
-\@writefile{toc}{\contentsline {title}{title}{1}{}}
+\@writefile{toc}{\contentsline {title}{Computational Simulation of Two-Dimensional Brownian Motion:\\ Diffusion Coefficient and Boltzmann Constant Extraction}{1}{}}
 \@writefile{toc}{\contentsline {abstract}{Abstract}{1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Theory}{1}{}}
+\newlabel{eq:einstein}{{1}{1}{}{}{}}
+\newlabel{eq:msd}{{2}{1}{}{}{}}
+\newlabel{eq:stokes}{{3}{1}{}{}{}}
+\newlabel{eq:kb}{{4}{1}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Simulation Development}{1}{}}
+\newlabel{sec:dev}{{III}{1}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Stage 1: Lattice walk}{1}{}}
+\citation{lukacs2026lab}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Stage~1: lattice random walk. Steps are constrained to the four cardinal directions, producing the square-grid appearance. This stage established the basic animation loop but uses no physical constants.}}{2}{}}
+\newlabel{fig:trial1}{{1}{2}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Stage 2: Continuous interpolated walk}{2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Stage 3: Multi-particle ensemble with MSD}{2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}Stage 4: Physics-grounded steps and analysis}{2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Stage~2: continuous interpolated walk. Replacing cardinal steps with Gaussian displacements and adding linear interpolation removes the lattice artefact, producing a realistic-looking trajectory. Step sizes are not yet physically motivated.}}{2}{}}
+\newlabel{fig:trial2}{{2}{2}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {E}Implementation challenges}{2}{}}
+\citation{nist}
+\citation{nist}
+\@writefile{toc}{\contentsline {subsection}{\numberline {F}Extension: Interactive particle box simulation}{3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Methods}{3}{}}
+\newlabel{sec:methods}{{IV}{3}{}{}{}}
+\newlabel{eq:ensmsd}{{5}{3}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Simulation parameters.}}{3}{}}
+\newlabel{tab:params}{{I}{3}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Results}{3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Results across four independent simulation runs. $D_{\mathrm  {theo}} = 4.905\times 10^{-13}$\,m$^2$/s; accepted $k_{\mathrm  {B}} = 1.381\times 10^{-23}$\,J/K. Uncertainties are $1\sigma $ from regression standard error.}}{3}{}}
+\newlabel{tab:runs}{{II}{3}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion}{3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Diffusion coefficient and Boltzmann constant}{3}{}}
+\citation{lukacs2026lab}
+\citation{lukacs2026lab}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Stage~4 simulation output. \textit  {Left}: 30-particle random walk ensemble ($T = 298$\,K, $a = 0.5\,\mu $m). The highlighted particle (black/red trail) is animated live; green dot marks its starting position. \textit  {Right}: Ensemble MSD versus time with theoretical prediction from Eq.~(\ref {eq:msd}) (orange dashed) and linear regression fit (green dotted). This run: $D_{\mathrm  {fit}} = 4.85\times 10^{-13}$\,m$^2$/s, $R^2 = 0.987$.}}{4}{}}
+\newlabel{fig:sim}{{3}{4}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Post-simulation analysis. \textit  {Left}: MSD residuals (simulated MSD minus linear fit) versus time. Shaded band shows $\pm 1\sigma = \pm 3.15\,\mu \mathrm  {m}^2$. Scatter increases at late times, consistent with finite ensemble sampling effects. \textit  {Right}: Displacement step distribution (all axes and particles, $n = 47{,}940$) versus expected Gaussian $\mathcal  {N}(0,\sigma )$ with $\sigma = 0.222\,\mu $m. Agreement is consistent with Einstein's assumption (Eq.~\ref {eq:einstein}).}}{4}{}}
+\newlabel{fig:analysis}{{4}{4}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Comparison with experimental results}{4}{}}
+\citation{lukacs2026lab}
+\citation{lukacs2026lab}
+\citation{nist}
+\citation{lukacs2026lab}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Gaussian step distribution}{5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}Interactive particle box simulation}{5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The upgraded interactive particle box simulation, shown paused. The large orange particle undergoes Brownian motion driven by elastic collisions with the smaller blue fluid molecules. The right panel shows live sliders for temperature, viscosity, and particle size, real-time diffusion statistics, and a live MSD plot (red: windowed $\langle r^2(\tau )\rangle $; green: linear fit). For this run: $D_{\mathrm  {sim}} = 109.78$\,px$^2$/s and $D\cdot r = 2744.5$\,px$^3$/s at $r = 25$\,px, $T = 300$\,K.}}{5}{}}
+\newlabel{fig:boxsim}{{5}{5}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{5}{}}
+\bibcite{brown1828}{{1}{}{{}}{{}}}
+\bibcite{einstein1905}{{2}{}{{}}{{}}}
+\bibcite{perrin1909}{{3}{}{{}}{{}}}
+\bibcite{reif1965}{{4}{}{{}}{{}}}
+\bibcite{lukacs2026lab}{{5}{}{{}}{{}}}
+\bibcite{nist}{{6}{}{{}}{{}}}
+\bibcite{water_viscosity}{{7}{}{{}}{{}}}
+\bibcite{anu_manual}{{8}{}{{}}{{}}}
 \bibdata{finalreportNotes}
 \bibstyle{apsrev4-1}
 \citation{REVTEX41Control}
 \citation{apsrev41Control}
-\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {II}Expeimental Procedure}{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {III}Results and Discussion}{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Conclusion}{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Endnotes and references}{2}{}}
-\@writefile{toc}{\appendix }
-\@writefile{toc}{\contentsline {section}{\numberline {\unskip }Uninteresting stuff}{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}Acknowledgments}{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}References}{2}{}}
-\newlabel{LastBibItem}{{0}{2}{}{}{}}
-\newlabel{LastPage}{{}{2}{}{}{}}
-\gdef \@abspage@last{2}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Try it yourself!}{6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}References}{6}{}}
+\newlabel{LastBibItem}{{8}{6}{}{}{}}
+\newlabel{LastPage}{{}{6}{}{}{}}
+\gdef \@abspage@last{6}

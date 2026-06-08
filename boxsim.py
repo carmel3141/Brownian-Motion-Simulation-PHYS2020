@@ -155,7 +155,7 @@ def print_summary(large, temp_s, eta_s, msd_data, d_sim, frame_n):
 def main():
     pygame.init()
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('Brownian Motion - Upgraded')
+    pygame.display.set_caption('Brownian Motion Simulation')
     clock  = pygame.time.Clock()
     font   = pygame.font.SysFont('monospace', 13)
     font_b = pygame.font.SysFont('monospace', 14, bold=True)
@@ -293,7 +293,6 @@ def main():
             screen.blit(font.render(txt, True, (150, 150, 150)), (panel_x + 10, height - 70 + i * 18))
         if paused:
             screen.blit(font_b.render('PAUSED', True, (200, 100, 0)), (box_x + 290, box_y + 325))
-
         pygame.display.flip()
 
     pygame.quit()
